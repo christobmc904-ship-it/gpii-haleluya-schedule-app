@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan Aplikasi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .settings-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #6366F1;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #666;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #6366F1;
+        }
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .setting-row:last-child {
+            border-bottom: none;
+        }
+
+        .toggle {
+            position: relative;
+            width: 50px;
+            height: 28px;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.3s;
+            border-radius: 28px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #6366F1;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(22px);
+        }
+
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #6366F1;
+            border: 2px solid #6366F1;
+        }
+
+        .btn-secondary:hover {
+            background: #6366F1;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #EF4444;
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        .btn-danger:hover {
+            background: #DC2626;
+        }
+
+        .info-text {
+            font-size: 0.85em;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .icon {
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Pengaturan Umum -->
+        <div class="settings-section">
+            <div class="section-title">
+                <span class="icon">⚙️</span>
+                Pengaturan Umum
+            </div>
+
+            <div class="form-group">
+                <label for="churchName">Nama Gereja</label>
+                <input type="text" id="churchName" value="GPII HALELUYA BELLO" placeholder="Masukkan nama gereja">
+                <div class="info-text">Nama yang ditampilkan di header aplikasi dan dokumen PDF</div>
+            </div>
+
+            <div class="form-group">
+                <label for="churchAddress">Alamat Gereja</label>
+                <textarea id="churchAddress" placeholder="Masukkan alamat gereja" rows="3"></textarea>
+                <div class="info-text">Alamat akan ditampilkan di dokumen resmi</div>
+            </div>
+
+            <div class="form-group">
+                <label for="contactEmail">Email Kontak</label>
+                <input type="email" id="contactEmail" placeholder="Masukkan email kontak">
+            </div>
+
+            <div class="form-group">
+                <label for="contactPhone">Nomor Telepon</label>
+                <input type="tel" id="contactPhone" placeholder="Masukkan nomor telepon">
+            </div>
+        </div>
+
+        <!-- Pengaturan Pelayanan -->
+        <div class="settings-section">
+            <div class="section-title">
+                <span class="icon">👥</span>
+                Pengaturan Pelayanan
+            </div>
+
+            <div class="setting-row">
+                <label>Aktifkan Notifikasi Email</label>
+                <label class="toggle">
+                    <input type="checkbox" id="emailNotification" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-row">
+                <label>Aktifkan Reminder SMS</label>
+                <label class="toggle">
+                    <input type="checkbox" id="smsReminder">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-row">
+                <label>Aktifkan Validasi Duplikat</label>
+                <label class="toggle">
+                    <input type="checkbox" id="validateDuplicate" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="form-group" style="margin-top: 15px;">
+                <label for="reminderDays">Pengingat Sebelum (hari)</label>
+                <select id="reminderDays">
+                    <option value="1">1 hari sebelumnya</option>
+                    <option value="2">2 hari sebelumnya</option>
+                    <option value="3">3 hari sebelumnya</option>
+                    <option value="7">1 minggu sebelumnya</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Pengaturan Ekspor -->
+        <div class="settings-section">
+            <div class="section-title">
+                <span class="icon">📄</span>
+                Pengaturan Ekspor
+            </div>
+
+            <div class="setting-row">
+                <label>Sertakan Logo di PDF</label>
+                <label class="toggle">
+                    <input type="checkbox" id="includeLogo" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-row">
+                <label>Format Tanggal PDF</label>
+                <select id="dateFormat">
+                    <option value="id">DD/MM/YYYY (Indonesia)</option>
+                    <option value="us">MM/DD/YYYY (US)</option>
+                    <option value="iso">YYYY-MM-DD (ISO)</option>
+                </select>
+            </div>
+
+            <div class="form-group" style="margin-top: 15px;">
+                <label for="pdfOrientation">Orientasi PDF</label>
+                <select id="pdfOrientation">
+                    <option value="portrait">Portrait</option>
+                    <option value="landscape">Landscape</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Backup & Restore -->
+        <div class="settings-section">
+            <div class="section-title">
+                <span class="icon">💾</span>
+                Backup & Restore
+            </div>
+
+            <div class="setting-row">
+                <label>Backup Otomatis</label>
+                <label class="toggle">
+                    <input type="checkbox" id="autoBackup" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="form-group" style="margin-top: 15px;">
+                <label for="backupFrequency">Frekuensi Backup</label>
+                <select id="backupFrequency">
+                    <option value="daily">Setiap Hari</option>
+                    <option value="weekly">Setiap Minggu</option>
+                    <option value="monthly">Setiap Bulan</option>
+                </select>
+            </div>
+
+            <button class="btn-primary" onclick="backupNow()" style="width: 100%; margin-top: 15px;">
+                ⬇️ Backup Sekarang
+            </button>
+
+            <div class="info-text" style="text-align: center; margin-top: 10px;">
+                Last backup: <span id="lastBackup">Belum pernah</span>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="btn-group">
+            <button class="btn-primary" onclick="saveSettings()">💾 Simpan Pengaturan</button>
+            <button class="btn-secondary" onclick="resetSettings()">🔄 Reset Default</button>
+        </div>
+        <button class="btn-danger" onclick="resetAll()">🗑️ Hapus Semua Data</button>
+    </div>
+
+    <script>
+        function saveSettings() {
+            const settings = {
+                churchName: document.getElementById('churchName').value,
+                churchAddress: document.getElementById('churchAddress').value,
+                contactEmail: document.getElementById('contactEmail').value,
+                contactPhone: document.getElementById('contactPhone').value,
+                emailNotification: document.getElementById('emailNotification').checked,
+                smsReminder: document.getElementById('smsReminder').checked,
+                validateDuplicate: document.getElementById('validateDuplicate').checked,
+                reminderDays: document.getElementById('reminderDays').value,
+                includeLogo: document.getElementById('includeLogo').checked,
+                dateFormat: document.getElementById('dateFormat').value,
+                pdfOrientation: document.getElementById('pdfOrientation').value,
+                autoBackup: document.getElementById('autoBackup').checked,
+                backupFrequency: document.getElementById('backupFrequency').value
+            };
+
+            google.script.run.withSuccessHandler(function(result) {
+                alert('✅ Pengaturan berhasil disimpan!');
+            }).saveAppSettings(settings);
+        }
+
+        function resetSettings() {
+            if (confirm('Apakah Anda yakin ingin mereset semua pengaturan ke default?')) {
+                document.getElementById('churchName').value = 'GPII HALELUYA BELLO';
+                document.getElementById('emailNotification').checked = true;
+                document.getElementById('validateDuplicate').checked = true;
+                document.getElementById('includeLogo').checked = true;
+                alert('Pengaturan telah direset ke default');
+            }
+        }
+
+        function resetAll() {
+            if (confirm('⚠️ PERINGATAN: Ini akan menghapus SEMUA data jadwal!\n\nApakah Anda benar-benar yakin?')) {
+                if (confirm('Terakhir: Klik OK untuk mengkonfirmasi penghapusan permanen')) {
+                    google.script.run.withSuccessHandler(function() {
+                        alert('✅ Semua data telah dihapus');
+                        google.script.host.close();
+                    }).deleteAllData();
+                }
+            }
+        }
+
+        function backupNow() {
+            google.script.run.withSuccessHandler(function(result) {
+                if (result.success) {
+                    document.getElementById('lastBackup').textContent = new Date().toLocaleString('id-ID');
+                    alert('✅ Backup berhasil dibuat!');
+                } else {
+                    alert('❌ Backup gagal: ' + result.error);
+                }
+            }).createBackup();
+        }
+
+        // Load settings saat page dibuka
+        window.addEventListener('load', function() {
+            google.script.run.withSuccessHandler(function(settings) {
+                if (settings) {
+                    document.getElementById('churchName').value = settings.churchName || 'GPII HALELUYA BELLO';
+                    document.getElementById('churchAddress').value = settings.churchAddress || '';
+                    document.getElementById('contactEmail').value = settings.contactEmail || '';
+                    document.getElementById('contactPhone').value = settings.contactPhone || '';
+                    document.getElementById('emailNotification').checked = settings.emailNotification !== false;
+                    document.getElementById('smsReminder').checked = settings.smsReminder || false;
+                    document.getElementById('validateDuplicate').checked = settings.validateDuplicate !== false;
+                    document.getElementById('reminderDays').value = settings.reminderDays || '1';
+                    document.getElementById('includeLogo').checked = settings.includeLogo !== false;
+                    document.getElementById('dateFormat').value = settings.dateFormat || 'id';
+                    document.getElementById('pdfOrientation').value = settings.pdfOrientation || 'portrait';
+                    document.getElementById('autoBackup').checked = settings.autoBackup !== false;
+                    document.getElementById('backupFrequency').value = settings.backupFrequency || 'weekly';
+                    document.getElementById('lastBackup').textContent = settings.lastBackup || 'Belum pernah';
+                }
+            }).getAppSettings();
+        });
+    </script>
+</body>
+</html>
