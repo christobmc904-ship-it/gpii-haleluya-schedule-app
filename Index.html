@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal Kegiatan Ibadah - GPII HALELUYA BELLO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366F1;
+            --secondary: #8B5CF6;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --info: #3B82F6;
+            --light: #F3F4F6;
+            --dark: #1F2937;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            text-align: center;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        .header h1 {
+            color: var(--primary);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header .church-name {
+            font-size: 1.8em;
+            color: var(--secondary);
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .header .subtitle {
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        /* Tabs Navigation */
+        .tabs-container {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            grid-column: 1 / -1;
+        }
+
+        .tabs-header {
+            display: flex;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px 20px;
+            background: none;
+            border: none;
+            color: var(--white);
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: rgba(255, 255, 255, 0.3);
+            border-bottom-color: var(--white);
+        }
+
+        .tab-content {
+            padding: 30px;
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border-left: 4px solid var(--primary);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-icon {
+            font-size: 2em;
+            margin-right: 15px;
+        }
+
+        .card-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .card-content {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--light);
+            border-radius: 8px;
+            font-size: 0.95em;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: var(--white);
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: var(--white);
+        }
+
+        .btn-danger:hover {
+            background: #DC2626;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--white);
+        }
+
+        table thead {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--white);
+        }
+
+        table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--light);
+        }
+
+        table tr:hover {
+            background-color: #f9fafb;
+        }
+
+        table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Status Badge */
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .badge-success {
+            background: #D1FAE5;
+            color: var(--success);
+        }
+
+        .badge-warning {
+            background: #FEF3C7;
+            color: var(--warning);
+        }
+
+        .badge-danger {
+            background: #FEE2E2;
+            color: var(--danger);
+        }
+
+        .badge-info {
+            background: #DBEAFE;
+            color: var(--info);
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.2s ease;
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        .action-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: scale(1.05);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .modal-header h2 {
+            color: var(--primary);
+            font-size: 1.5em;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #999;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--dark);
+            transform: rotate(90deg);
+        }
+
+        /* Statistics */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-top: 4px solid var(--primary);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        /* Animations */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .alert-success {
+            background: #D1FAE5;
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+
+        .alert-error {
+            background: #FEE2E2;
+            color: var(--danger);
+            border-left: 4px solid var(--danger);
+        }
+
+        .alert-warning {
+            background: #FEF3C7;
+            color: var(--warning);
+            border-left: 4px solid var(--warning);
+        }
+
+        .alert-info {
+            background: #DBEAFE;
+            color: var(--info);
+            border-left: 4px solid var(--info);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .tabs-header {
+                overflow-x: auto;
+            }
+
+            .tab-btn {
+                flex: 0 0 auto;
+                min-width: 150px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                max-width: 90%;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            table th,
+            table td {
+                padding: 10px;
+            }
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid var(--light);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .empty-state-text {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="church-name">🙏 GPII HALELUYA BELLO</div>
+            <h1>📅 Jadwal Kegiatan Ibadah</h1>
+            <div class="subtitle">Aplikasi Manajemen Jadwal Pelayanan Gereja</div>
+        </div>
+
+        <!-- Tabs Container -->
+        <div class="tabs-container">
+            <div class="tabs-header">
+                <button class="tab-btn active" onclick="switchTab('dashboard')">📊 Dashboard</button>
+                <button class="tab-btn" onclick="switchTab('sunday')">☀️ Ibadah Minggu</button>
+                <button class="tab-btn" onclick="switchTab('youth')">👦 Ibadah Pemuda</button>
+                <button class="tab-btn" onclick="switchTab('prayer')">🙏 Persekutuan Doa</button>
+                <button class="tab-btn" onclick="switchTab('family')">👨‍👩‍👧 Ibadah Rumah Tangga</button>
+                <button class="tab-btn" onclick="switchTab('sunday-school')">📚 Sekolah Minggu</button>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active">
+                <h2 style="color: var(--primary); margin-bottom: 20px;">📊 Dashboard Utama</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-schedules">0</div>
+                        <div class="stat-label">Total Jadwal</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="confirmed-count">0</div>
+                        <div class="stat-label">Terkonfirmasi</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="pending-count">0</div>
+                        <div class="stat-label">Menunggu Konfirmasi</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="unable-count">0</div>
+                        <div class="stat-label">Berhalangan</div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="openAddScheduleModal()">
+                        <i class="fas fa-plus"></i> Tambah Jadwal Baru
+                    </button>
+                    <button class="btn btn-success" onclick="exportAllPDF()">
+                        <i class="fas fa-file-pdf"></i> Export PDF Lengkap
+                    </button>
+                    <button class="btn btn-info" onclick="printAllSchedules()">
+                        <i class="fas fa-print"></i> Print Semua
+                    </button>
+                </div>
+
+                <div id="dashboard-content" style="margin-top: 30px;">
+                    <!-- Konten dashboard akan diisi oleh JavaScript -->
+                </div>
+            </div>
+
+            <!-- Ibadah Minggu Tab -->
+            <div id="sunday" class="tab-content">
+                <h2 style="color: var(--primary); margin-bottom: 20px;">☀️ Jadwal Ibadah Minggu</h2>
+                <button class="btn btn-primary" onclick="openAddScheduleModal('Ibadah Minggu')">
+                    <i class="fas fa-plus"></i> Tambah Pelayanan
+                </button>
+                <div class="table-container" id="sunday-table"></div>
+            </div>
+
+            <!-- Ibadah Pemuda Tab -->
+            <div id="youth" class="tab-content">
+                <h2 style="color: var(--primary); margin-bottom: 20px;">👦 Jadwal Ibadah Pemuda</h2>
+                <button class="btn btn-primary" onclick="openAddScheduleModal('Ibadah Pemuda')">
+                    <i class="fas fa-plus"></i> Tambah Pelayanan
+                </button>
+                <div class="table-container" id="youth-table"></div>
+            </div>
+
+            <!-- Persekutuan Doa Tab -->
+            <div id="prayer" class="tab-content">
+                <h2 style="color: var(--primary); margin-bottom: 20px;">🙏 Jadwal Persekutuan Doa</h2>
+                <button class="btn btn-primary" onclick="openAddScheduleModal('Persekutuan Doa')">
+                    <i class="fas fa-plus"></i> Tambah Pelayanan
+                </button>
+                <div class="table-container" id="prayer-table"></div>
+            </div>
+
+            <!-- Ibadah Rumah Tangga Tab -->
+            <div id="family" class="tab-content">
+                <h2 style="color: var(--primary); margin-bottom: 20px;">👨‍👩‍👧 Jadwal Ibadah Rumah Tangga</h2>
+                <button class="btn btn-primary" onclick="openAddScheduleModal('Ibadah Rumah Tangga')">
+                    <i class="fas fa-plus"></i> Tambah Pelayanan
+                </button>
+                <div class="table-container" id="family-table"></div>
+            </div>
+
+            <!-- Sekolah Minggu Tab -->
+            <div id="sunday-school" class="tab-content">
+                <h2 style="color: var(--primary); margin-bottom: 20px;">📚 Jadwal Sekolah Minggu</h2>
+                <button class="btn btn-primary" onclick="openAddScheduleModal('Sekolah Minggu')">
+                    <i class="fas fa-plus"></i> Tambah Pengajar
+                </button>
+                <div class="table-container" id="sunday-school-table"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tambah Jadwal -->
+    <div id="addScheduleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>➕ Tambah Jadwal Baru</h2>
+                <button class="modal-close" onclick="closeModal('addScheduleModal')">×</button>
+            </div>
+            <form id="scheduleForm" onsubmit="saveSchedule(event)">
+                <div class="form-group">
+                    <label for="serviceType">Jenis Ibadah *</label>
+                    <select id="serviceType" required onchange="updateRoles()">
+                        <option value="">-- Pilih Jenis Ibadah --</option>
+                        <option value="Ibadah Minggu">☀️ Ibadah Minggu</option>
+                        <option value="Ibadah Pemuda">👦 Ibadah Pemuda</option>
+                        <option value="Persekutuan Doa">🙏 Persekutuan Doa</option>
+                        <option value="Ibadah Rumah Tangga">👨‍👩‍👧 Ibadah Rumah Tangga</option>
+                        <option value="Sekolah Minggu">📚 Sekolah Minggu</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Tanggal *</label>
+                    <input type="date" id="date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Peran/Pelayanan *</label>
+                    <select id="role" required>
+                        <option value="">-- Pilih Peran --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Nama Pelayanan *</label>
+                    <input type="text" id="name" placeholder="Masukkan nama" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Nomor HP</label>
+                    <input type="tel" id="phone" placeholder="Contoh: 081234567890">
+                </div>
+
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status">
+                        <option value="Terkonfirmasi">✅ Terkonfirmasi</option>
+                        <option value="Menunggu Konfirmasi">⏳ Menunggu Konfirmasi</option>
+                        <option value="Berhalangan">❌ Berhalangan</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Catatan</label>
+                    <textarea id="notes" rows="3" placeholder="Masukkan catatan tambahan..."></textarea>
+                </div>
+
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Simpan
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addScheduleModal')">
+                        <i class="fas fa-times"></i> Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi untuk switch tab
+        function switchTab(tabName) {
+            // Hide all tabs
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active class from all buttons
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+
+            // Load data for the selected tab
+            if (tabName === 'dashboard') {
+                loadDashboard();
+            } else {
+                loadTableData(tabName);
+            }
+        }
+
+        // Fungsi untuk membuka modal
+        function openAddScheduleModal(serviceType = '') {
+            if (serviceType) {
+                document.getElementById('serviceType').value = serviceType;
+                updateRoles();
+            }
+            document.getElementById('addScheduleModal').classList.add('active');
+        }
+
+        // Fungsi untuk tutup modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Fungsi untuk update peran berdasarkan jenis ibadah
+        function updateRoles() {
+            const serviceType = document.getElementById('serviceType').value;
+            const roleSelect = document.getElementById('role');
+            roleSelect.innerHTML = '<option value="">-- Pilih Peran --</option>';
+
+            google.script.run.getAltarServices(serviceType, function(roles) {
+                roles.forEach(role => {
+                    const option = document.createElement('option');
+                    option.value = role;
+                    option.textContent = role;
+                    roleSelect.appendChild(option);
+                });
+            });
+        }
+
+        // Fungsi untuk simpan jadwal
+        function saveSchedule(event) {
+            event.preventDefault();
+
+            const scheduleData = {
+                date: document.getElementById('date').value,
+                serviceType: document.getElementById('serviceType').value,
+                role: document.getElementById('role').value,
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                status: document.getElementById('status').value,
+                notes: document.getElementById('notes').value
+            };
+
+            google.script.run.withSuccessHandler(function(result) {
+                if (result.success) {
+                    showAlert('success', result.message);
+                    document.getElementById('scheduleForm').reset();
+                    closeModal('addScheduleModal');
+                    loadTableData(scheduleData.serviceType);
+                } else {
+                    showAlert('error', result.message);
+                }
+            }).withFailureHandler(function(error) {
+                showAlert('error', 'Error: ' + error);
+            }).saveSchedule(scheduleData);
+        }
+
+        // Fungsi untuk tampilkan alert
+        function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
+            
+            const container = document.querySelector('.container');
+            container.insertBefore(alertDiv, container.firstChild);
+
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        // Fungsi untuk load data tabel
+        function loadTableData(tabName) {
+            const tableId = tabName.toLowerCase().replace(/\s+/g, '-') + '-table';
+            const container = document.getElementById(tableId);
+
+            if (!container) return;
+
+            google.script.run.withSuccessHandler(function(schedules) {
+                if (schedules && schedules.length > 0) {
+                    let html = '<table><thead><tr><th>Tanggal</th><th>Peran</th><th>Nama</th><th>Nomor HP</th><th>Status</th><th>Catatan</th><th>Aksi</th></tr></thead><tbody>';
+
+                    schedules.forEach((schedule, index) => {
+                        const statusBadge = getStatusBadge(schedule.Status);
+                        html += `
+                            <tr>
+                                <td>${schedule.Tanggal || '-'}</td>
+                                <td>${schedule['Pelayanan'] || '-'}</td>
+                                <td>${schedule.Nama || '-'}</td>
+                                <td>${schedule['Nomor HP'] || '-'}</td>
+                                <td>${statusBadge}</td>
+                                <td>${schedule.Catatan || '-'}</td>
+                                <td>
+                                    <button class="action-btn" onclick="editSchedule(${index + 2})"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn" onclick="deleteSchedule(${index + 2})"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+
+                    html += '</tbody></table>';
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📭</div>
+                            <div class="empty-state-text">Belum ada jadwal untuk kategori ini</div>
+                        </div>
+                    `;
+                }
+            }).getScheduleByType(tabName);
+        }
+
+        // Fungsi untuk load dashboard
+        function loadDashboard() {
+            google.script.run.withSuccessHandler(function(allSchedules) {
+                let totalSchedules = 0;
+                let confirmedCount = 0;
+                let pendingCount = 0;
+                let unableCount = 0;
+
+                Object.keys(allSchedules).forEach(serviceType => {
+                    allSchedules[serviceType].forEach(schedule => {
+                        totalSchedules++;
+                        if (schedule.Status === 'Terkonfirmasi') {
+                            confirmedCount++;
+                        } else if (schedule.Status === 'Menunggu Konfirmasi') {
+                            pendingCount++;
+                        } else if (schedule.Status === 'Berhalangan') {
+                            unableCount++;
+                        }
+                    });
+                });
+
+                document.getElementById('total-schedules').textContent = totalSchedules;
+                document.getElementById('confirmed-count').textContent = confirmedCount;
+                document.getElementById('pending-count').textContent = pendingCount;
+                document.getElementById('unable-count').textContent = unableCount;
+            }).getAllSchedules();
+        }
+
+        // Fungsi untuk get status badge
+        function getStatusBadge(status) {
+            switch(status) {
+                case 'Terkonfirmasi':
+                    return '<span class="badge badge-success">✅ Terkonfirmasi</span>';
+                case 'Menunggu Konfirmasi':
+                    return '<span class="badge badge-warning">⏳ Menunggu Konfirmasi</span>';
+                case 'Berhalangan':
+                    return '<span class="badge badge-danger">❌ Berhalangan</span>';
+                default:
+                    return '<span class="badge badge-info">ℹ️ Tidak Ditentukan</span>';
+            }
+        }
+
+        // Fungsi untuk export PDF
+        function exportAllPDF() {
+            google.script.run.withSuccessHandler(function(pdfUrl) {
+                window.open(pdfUrl, '_blank');
+                showAlert('success', 'PDF berhasil dibuat!');
+            }).generateCompletePDF();
+        }
+
+        // Fungsi untuk print
+        function printAllSchedules() {
+            window.print();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDashboard();
+        });
+
+        // Close modal ketika klik di luar
+        window.onclick = function(event) {
+            const modal = document.getElementById('addScheduleModal');
+            if (event.target === modal) {
+                modal.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>
